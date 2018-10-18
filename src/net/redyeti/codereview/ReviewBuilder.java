@@ -1,27 +1,24 @@
 /**
  * $Source:$
  * $Id:$
- *
+ * <p>
  * Copyright 2006 KBC Financial Products - Risk Technology
  */
 package net.redyeti.codereview;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.*;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ParseErrorException;
+import org.jetbrains.annotations.NotNull;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diff.*;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.changes.*;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.util.text.LineTokenizer;
+import com.intellij.openapi.vcs.changes.Change;
+import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.util.diff.Diff;
 import com.intellij.util.diff.FilesTooBigForDiffException;
 
@@ -57,8 +54,7 @@ public class ReviewBuilder {
   }
 
   public void build() throws BuildException {
-    CodeReviewConfig config = ApplicationManager.getApplication().getComponent(CodeReviewConfig.class);
-
+    CodeReviewConfig config = ServiceManager.getService(CodeReviewConfig.class);
     List<ChangedFile> changeList = buildChangeList(changes, config);
 
     VelocityContext context = new VelocityContext();
@@ -80,7 +76,7 @@ public class ReviewBuilder {
     plainContent = renderTemplate(template, context);
 
 //      htmlText = renderTemplate(config.getHtmlTemplate(), context);
-    if (config.isSendAsHtml()) {
+    if (config.sendAsHtml) {
       try {
         template = FileUtils.readTextResource(HTML_EMAIL_TEMPLATE_VM);
       } catch (IOException e) {
@@ -100,7 +96,7 @@ public class ReviewBuilder {
    * @return
    * @throws BuildException if the content couldn't be retrieved from the VCS.
    */
-  private List<ChangedFile> buildChangeList(Collection<Change> changes, CodeReviewConfig config) throws BuildException {
+  private List<ChangedFile> buildChangeList(Collection<Change> changes, CodeReviewConfig config) {
     List<ChangedFile> changeList = new ArrayList<ChangedFile>(changes.size());
 
     for (Change change : changes) {
@@ -115,27 +111,8 @@ public class ReviewBuilder {
       String beforeRevStr = beforeRevision != null ? beforeRevision.getRevisionNumber().asString() : null;
       String afterRevStr = afterRevision != null ? afterRevision.getRevisionNumber().asString() : null;
 
-      DiffContent beforeContent;
-      DiffContent afterContent;
-      try {
-        beforeContent = createContent(project, beforeRevision);
-        afterContent = createContent(project, afterRevision);
-      } catch (VcsException e) {
-        StringBuilder buf = new StringBuilder(200);
-        buf.append("Error loading content from VCS for file\n").append(beforeName != null ? beforeName : afterName);
-        if (beforeRevStr == null)
-          buf.append(" (new file)");
-        else if (afterRevStr == null)
-          buf.append(" (revision ").append(beforeRevStr).append(" deleted)");
-        else
-          buf.append(" (revision ").append(beforeRevStr).append(" modified)");
-
-        buf.append("\n\nReason: ").append(e.getMessage());
-        throw new BuildException(buf.toString(), e);
-      }
-
       List<ChangedFile.Line> lines = new ArrayList<ChangedFile.Line>(1);
-      if (beforeContent.isBinary() || afterContent.isBinary()) {
+      if (isBinary(beforeRevision) || isBinary(afterRevision)) {
         if (beforeRevStr == null)
           lines.add(new ChangedFile.Line("Binary file has been added", ChangedFile.LineType.UNCHANGED, 1, 1));
         else if (afterRevStr == null)
@@ -143,14 +120,13 @@ public class ReviewBuilder {
         else
           lines.add(new ChangedFile.Line("Binary file has been changed", ChangedFile.LineType.UNCHANGED, 1, 1));
       } else {
-        CharSequence[] beforeLines = getLinesOfText(beforeContent, config.isIgnoreTrailingWhitespace());
-        CharSequence[] afterLines = getLinesOfText(afterContent, config.isIgnoreTrailingWhitespace());
+        CharSequence[] beforeLines = getLinesOfText(beforeRevision, config.ignoreTrailingWhitespace);
+        CharSequence[] afterLines = getLinesOfText(afterRevision, config.ignoreTrailingWhitespace);
 
-        Diff.Change diff = null;
         if (beforeLines != null && afterLines != null)
           try {
-            diff = Diff.buildChanges(beforeLines, afterLines);
-            lines = buildLines(diff, beforeLines, afterLines, config.getLinesOfContext());
+            Diff.Change diff = Diff.buildChanges(beforeLines, afterLines);
+            lines = buildLines(diff, beforeLines, afterLines, config.linesOfContext);
           } catch (FilesTooBigForDiffException e) {
             lines.add(new ChangedFile.Line("The differences is too big to compare", ChangedFile.LineType.UNCHANGED, 1, 1));
           }
@@ -159,6 +135,10 @@ public class ReviewBuilder {
       changeList.add(changedFile);
     }
     return changeList;
+  }
+
+  private boolean isBinary(ContentRevision revision) {
+    return revision != null && revision.getFile().getFileType().isBinary();
   }
 
   /**
@@ -227,60 +207,30 @@ public class ReviewBuilder {
   }
 
   /**
-   * Retrieves the contents of a particular revision
-   */
-  private DiffContent createContent(Project project, ContentRevision revision) throws VcsException {
-    if (revision == null) return new SimpleContent("");
-    FileType fileType = revision.getFile().getFileType();
-    Charset utf8 = Charset.forName("UTF-8");
-    boolean binary = fileType.isBinary();
-    if (revision instanceof CurrentContentRevision) {
-      CurrentContentRevision current = (CurrentContentRevision) revision;
-      VirtualFile vFile = current.getVirtualFile();
-      if (vFile != null) {
-        return new FileContent(project, vFile);
-      } else {
-        if (binary) {
-          return new BinaryContent(new byte[0], utf8, fileType);
-        } else {
-          return new SimpleContent("");
-        }
-      }
-    }
-    String revisionContent = revision.getContent();
-    if (binary) {
-      return revisionContent == null
-          ? new BinaryContent(new byte[0], utf8, fileType)
-          : new BinaryContent(revisionContent.getBytes(utf8), utf8, fileType);
-    } else {
-      SimpleContent content = revisionContent == null
-          ? new SimpleContent("")
-          : new SimpleContent(revisionContent, fileType);
-      content.setReadOnly(true);
-      return content;
-    }
-  }
-
-  /**
    * Gets the lines of text that makes up this content as an array of strings
    */
-  private CharSequence[] getLinesOfText(DiffContent content, boolean ignoreTrailingWhitespace) {
-    Document document = content.getDocument();
-    if (document == null)
+  private CharSequence[] getLinesOfText(ContentRevision content, boolean ignoreTrailingWhitespace) {
+    if (content == null) {
       return null;
-    int lines = document.getLineCount();
-    CharSequence[] result = new CharSequence[lines];
-    CharSequence text = document.getCharsSequence();
+    }
 
-    for (int i = 0; i < lines; i++) {
-      CharSequence line = text.subSequence(document.getLineStartOffset(i), document.getLineEndOffset(i));
+    CharSequence[] result;
+    try {
+      result = splitLines(content.getContent());
       if (ignoreTrailingWhitespace) {
-        line = rightTrim(line);
+        for (int i = 0; i < result.length; i++) {
+          result[i] = rightTrim(result[i]);
+        }
       }
-      // Convert to a string otherwise the diff seems to fail everything :(
-      result[i] = line.toString();
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to process content " + content.getFile(), e);
     }
     return result;
+  }
+
+  @NotNull
+  private static String[] splitLines(@NotNull CharSequence s) {
+    return s.length() == 0 ? new String[]{""} : LineTokenizer.tokenize(s, false, false);
   }
 
   /**

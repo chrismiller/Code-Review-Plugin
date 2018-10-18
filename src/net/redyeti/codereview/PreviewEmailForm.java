@@ -13,7 +13,7 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.ui.Messages;
 
 public class PreviewEmailForm {
@@ -53,10 +53,10 @@ public class PreviewEmailForm {
       previewTabs.setEnabledAt(1, false);
     }
 
-    CodeReviewConfig config = ApplicationManager.getApplication().getComponent(CodeReviewConfig.class);
-    attachZipCheckBox.setSelected(config.isAttachZipFile());
+    CodeReviewConfig config = ServiceManager.getService(CodeReviewConfig.class);
+    attachZipCheckBox.setSelected(config.attachZipFile);
 
-    if (config.isSendAsHtml() && htmlContent != null) {
+    if (config.sendAsHtml && htmlContent != null) {
       try {
         initHtmlPanel(htmlContent);
       }
@@ -124,23 +124,23 @@ public class PreviewEmailForm {
 
   public ReviewSettings getChosenSettings() {
 
-    CodeReviewConfig config = ApplicationManager.getApplication().getComponent(CodeReviewConfig.class);
+    CodeReviewConfig config = ServiceManager.getService(CodeReviewConfig.class);
     ReviewSettings settings = new ReviewSettings();
 
-    settings.setSmtpServer(config.getSmtpServer());
-    settings.setSmtpPort(config.getSmtpPort());
-    settings.setSmtpUsername(config.getSmtpUsername());
-    String password = PasswordMangler.decode(config.getEncodedSmtpPassword());
+    settings.setSmtpServer(config.smtpServer);
+    settings.setSmtpPort(config.smtpPort);
+    settings.setSmtpUsername(config.smtpUsername);
+    String password = PasswordMangler.decode(config.encodedSmtpPassword);
     settings.setSmtpPassword(password);
-    settings.setUseSSL(config.isUseSSL());
-    settings.setFromAddress(config.getFromAddress());
+    settings.setUseSSL(config.useSSL);
+    settings.setFromAddress(config.fromAddress);
 
     settings.setToAddresses(toTextField.getText());
     settings.setCcAddresses(ccTextField.getText());
     settings.setBccAddresses(bccTextField.getText());
 
-    if (config.getSubjectPrefix() != null)
-      settings.setSubject(config.getSubjectPrefix() + subjectTextField.getText());
+    if (config.subjectPrefix != null)
+      settings.setSubject(config.subjectPrefix + subjectTextField.getText());
     else
       settings.setSubject(subjectTextField.getText());
 

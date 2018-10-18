@@ -70,18 +70,18 @@ public class CodeReviewConfigForm {
    * Called by IDEA to apply the user's code review configuration to the form.
    */
   public void setData(CodeReviewConfig config) {
-    smtpServerTextField.setText(config.getSmtpServer());
-    smtpPortTextField.setText(String.valueOf(config.getSmtpPort()));
-    smtpUsernameTextField.setText(config.getSmtpUsername());
-    useSslCheckBox.setSelected(config.isUseSSL());
-    fromAddressTextField.setText(config.getFromAddress());
-    replyToAddressTextField.setText(config.getReplyToAddress());
-    subjectPrefixTextField.setText(config.getSubjectPrefix());
-    linesOfContextTextField.setText(String.valueOf(config.getLinesOfContext()));
-    if (!config.isSendAsHtml())
+    smtpServerTextField.setText(config.smtpServer);
+    smtpPortTextField.setText(String.valueOf(config.smtpPort));
+    smtpUsernameTextField.setText(config.smtpUsername);
+    useSslCheckBox.setSelected(config.useSSL);
+    fromAddressTextField.setText(config.fromAddress);
+    replyToAddressTextField.setText(config.replyToAddress);
+    subjectPrefixTextField.setText(config.subjectPrefix);
+    linesOfContextTextField.setText(String.valueOf(config.linesOfContext));
+    if (!config.sendAsHtml)
       sendEmailInHTMLCheckBox.doClick();  // Disable the color pickers
-    ignoreTrailingWhitespaceCheckBox.setSelected(config.isIgnoreTrailingWhitespace());
-    attachZipFileCheckBox.setSelected(config.isAttachZipFile());
+    ignoreTrailingWhitespaceCheckBox.setSelected(config.ignoreTrailingWhitespace);
+    attachZipFileCheckBox.setSelected(config.attachZipFile);
     insertedColorPanel.setSelectedColor(config.getInsertedLineColor());
     deletedColorPanel.setSelectedColor(config.getDeletedLineColor());
     omittedColorPanel.setSelectedColor(config.getOmittedLineColor());
@@ -165,14 +165,14 @@ public class CodeReviewConfigForm {
       config.setEncodedSmtpPassword(encodedPassword);
     }
     passwordChanged = false;
-    config.setUseSSL(useSslCheckBox.isSelected());
-    config.setFromAddress(fromAddressTextField.getText());
-    config.setReplyToAddress(replyToAddressTextField.getText());
-    config.setSubjectPrefix(subjectPrefixTextField.getText());
-    config.setLinesOfContext(linesOfContext);
-    config.setIgnoreTrailingWhitespace(ignoreTrailingWhitespaceCheckBox.isSelected());
-    config.setAttachZipFile(attachZipFileCheckBox.isSelected());
-    config.setSendAsHtml(sendEmailInHTMLCheckBox.isSelected());
+    config.useSSL = useSslCheckBox.isSelected();
+    config.fromAddress = fromAddressTextField.getText();
+    config.replyToAddress = replyToAddressTextField.getText();
+    config.subjectPrefix = subjectPrefixTextField.getText();
+    config.linesOfContext = linesOfContext;
+    config.ignoreTrailingWhitespace = ignoreTrailingWhitespaceCheckBox.isSelected();
+    config.attachZipFile = attachZipFileCheckBox.isSelected();
+    config.sendAsHtml = sendEmailInHTMLCheckBox.isSelected();
     config.setInsertedLineColor(insertedColorPanel.getSelectedColor());
     config.setDeletedLineColor(deletedColorPanel.getSelectedColor());
     config.setOmittedLineColor(omittedColorPanel.getSelectedColor());
@@ -194,35 +194,35 @@ public class CodeReviewConfigForm {
    * determines whether or not the 'Apply' button should be enabled.
    */
   public boolean isModified(CodeReviewConfig config) {
-    if (smtpServerTextField.getText() != null ? !smtpServerTextField.getText().equals(config.getSmtpServer()) : config.getSmtpServer() != null)
+    if (smtpServerTextField.getText() != null ? !smtpServerTextField.getText().equals(config.smtpServer) : config.smtpServer != null)
       return true;
-    if (smtpPortTextField.getText() == null || !smtpPortTextField.getText().equals(String.valueOf(config.getSmtpPort())))
+    if (smtpPortTextField.getText() == null || !smtpPortTextField.getText().equals(String.valueOf(config.smtpPort)))
       return true;
-    if (useSslCheckBox.isSelected() != config.isUseSSL())
+    if (useSslCheckBox.isSelected() != config.useSSL)
       return true;
-    if (smtpUsernameTextField.getText() != null ? !smtpUsernameTextField.getText().equals(config.getSmtpUsername()) : config.getSmtpUsername() != null)
+    if (smtpUsernameTextField.getText() != null ? !smtpUsernameTextField.getText().equals(config.smtpUsername) : config.smtpUsername != null)
       return true;
     if (passwordChanged)
       return true;
-    if (fromAddressTextField.getText() != null ? !fromAddressTextField.getText().equals(config.getFromAddress()) : config.getFromAddress() != null)
+    if (fromAddressTextField.getText() != null ? !fromAddressTextField.getText().equals(config.fromAddress) : config.fromAddress != null)
       return true;
-    if (replyToAddressTextField.getText() != null ? !replyToAddressTextField.getText().equals(config.getReplyToAddress()) : config.getReplyToAddress() != null)
+    if (replyToAddressTextField.getText() != null ? !replyToAddressTextField.getText().equals(config.replyToAddress) : config.replyToAddress != null)
       return true;
-    if (subjectPrefixTextField.getText() != null ? !subjectPrefixTextField.getText().equals(config.getSubjectPrefix()) : config.getSubjectPrefix() != null)
+    if (subjectPrefixTextField.getText() != null ? !subjectPrefixTextField.getText().equals(config.subjectPrefix) : config.subjectPrefix != null)
       return true;
-    if (linesOfContextTextField.getText() == null || !linesOfContextTextField.getText().equals(String.valueOf(config.getLinesOfContext())))
+    if (linesOfContextTextField.getText() == null || !linesOfContextTextField.getText().equals(String.valueOf(config.linesOfContext)))
       return true;
-    if (insertedColorPanel.getSelectedColor() != null ? !insertedColorPanel.getSelectedColor().equals(config.getInsertedLineColor()) : config.getInsertedLineColor() != null)
+    if (insertedColorPanel.getSelectedColor() != null ? !insertedColorPanel.getSelectedColor().equals(config.insertedLineColor) : config.insertedLineColor != null)
       return true;
-    if (deletedColorPanel.getSelectedColor() != null ? !deletedColorPanel.getSelectedColor().equals(config.getDeletedLineColor()) : config.getDeletedLineColor() != null)
+    if (deletedColorPanel.getSelectedColor() != null ? !deletedColorPanel.getSelectedColor().equals(config.deletedLineColor) : config.deletedLineColor != null)
       return true;
-    if (omittedColorPanel.getSelectedColor() != null ? !omittedColorPanel.getSelectedColor().equals(config.getOmittedLineColor()) : config.getOmittedLineColor() != null)
+    if (omittedColorPanel.getSelectedColor() != null ? !omittedColorPanel.getSelectedColor().equals(config.omittedLineColor) : config.omittedLineColor != null)
       return true;
-    if (ignoreTrailingWhitespaceCheckBox.isSelected() != config.isIgnoreTrailingWhitespace())
+    if (ignoreTrailingWhitespaceCheckBox.isSelected() != config.ignoreTrailingWhitespace)
       return true;
-    if (attachZipFileCheckBox.isSelected() != config.isAttachZipFile())
+    if (attachZipFileCheckBox.isSelected() != config.attachZipFile)
       return true;
-    return sendEmailInHTMLCheckBox.isSelected() != config.isSendAsHtml();
+    return sendEmailInHTMLCheckBox.isSelected() != config.sendAsHtml;
   }
 
   private class TemplateComboEntry {

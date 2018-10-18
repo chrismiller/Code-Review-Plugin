@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AntConfiguration">
-    <defaultAnt bundledAnt="true" />
-  </component>
   <component name="BuildJarProjectSettings">
     <option name="BUILD_JARS_ON_MAKE" value="false" />
   </component>
@@ -96,7 +93,6 @@
     <option name="USE_PER_PROJECT_SETTINGS" value="true" />
   </component>
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -113,15 +109,8 @@
       <entry name="?*.tld" />
       <entry name="*.vm" />
     </wildcardResourcePatterns>
-    <annotationProcessing>
-      <profile default="true" name="Default" enabled="false">
-        <processorPath useClasspath="true" />
-      </profile>
-    </annotationProcessing>
   </component>
-  <component name="CopyrightManager" default="">
-    <module2copyright />
-  </component>
+  <component name="CopyrightManager" default="" />
   <component name="DependenciesAnalyzeManager">
     <option name="myForwardDirection" value="false" />
   </component>
@@ -142,10 +131,6 @@
     <option name="ADDITIONAL_OPTIONS_STRING" value="" />
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
-  <component name="EntryPointsManager">
-    <entry_points version="2.0" />
-  </component>
   <component name="ExportToHTMLSettings">
     <option name="PRINT_LINE_NUMBERS" value="false" />
     <option name="OPEN_IN_BROWSER" value="false" />
@@ -153,55 +138,18 @@
   </component>
   <component name="IdProvider" IDEtalkID="9EFE0A8871C8923DFC4B39070208816A" />
   <component name="InspectionProjectProfileManager">
-    <profiles>
-      <profile version="1.0" is_locked="false">
-        <option name="myName" value="Project Default" />
-        <option name="myLocal" value="false" />
-        <inspection_tool class="JavaDoc" enabled="false" level="WARNING" enabled_by_default="false">
-          <option name="TOP_LEVEL_CLASS_OPTIONS">
-            <value>
-              <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
-              <option name="REQUIRED_TAGS" value="" />
-            </value>
-          </option>
-          <option name="INNER_CLASS_OPTIONS">
-            <value>
-              <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
-              <option name="REQUIRED_TAGS" value="" />
-            </value>
-          </option>
-          <option name="METHOD_OPTIONS">
-            <value>
-              <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
-              <option name="REQUIRED_TAGS" value="@return@param@throws or @exception" />
-            </value>
-          </option>
-          <option name="FIELD_OPTIONS">
-            <value>
-              <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
-              <option name="REQUIRED_TAGS" value="" />
-            </value>
-          </option>
-          <option name="IGNORE_DEPRECATED" value="false" />
-          <option name="IGNORE_JAVADOC_PERIOD" value="true" />
-          <option name="IGNORE_DUPLICATED_THROWS" value="false" />
-          <option name="IGNORE_POINT_TO_ITSELF" value="false" />
-          <option name="myAdditionalJavadocTags" value="" />
-        </inspection_tool>
-        <inspection_tool class="JavadocReference" enabled="true" level="WARNING" enabled_by_default="true" />
-        <inspection_tool class="SimplifiableIfStatement" enabled="false" level="WARNING" enabled_by_default="false" />
-      </profile>
-    </profiles>
-    <option name="PROJECT_PROFILE" value="Project Default" />
-    <option name="USE_PROJECT_PROFILE" value="true" />
+    <profile version="1.0">
+      <option name="myName" value="Project Default" />
+    </profile>
     <version value="1.0" />
-    <list size="6">
-      <item index="0" class="java.lang.String" itemvalue="WEAK WARNING" />
-      <item index="1" class="java.lang.String" itemvalue="INFO" />
-      <item index="2" class="java.lang.String" itemvalue="WARNING" />
-      <item index="3" class="java.lang.String" itemvalue="ERROR" />
-      <item index="4" class="java.lang.String" itemvalue="TYPO" />
-      <item index="5" class="java.lang.String" itemvalue="SERVER PROBLEM" />
+    <list size="7">
+      <item index="0" class="java.lang.String" itemvalue="INFORMATION" />
+      <item index="1" class="java.lang.String" itemvalue="WEAK WARNING" />
+      <item index="2" class="java.lang.String" itemvalue="INFO" />
+      <item index="3" class="java.lang.String" itemvalue="WARNING" />
+      <item index="4" class="java.lang.String" itemvalue="ERROR" />
+      <item index="5" class="java.lang.String" itemvalue="TYPO" />
+      <item index="6" class="java.lang.String" itemvalue="SERVER PROBLEM" />
     </list>
   </component>
   <component name="JavadocGenerationManager">
@@ -373,6 +321,74 @@
       </item>
     </group>
   </component>
+  <component name="ProjectCodeStyleConfiguration">
+    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
+    <code_scheme name="Project" version="173">
+      <JavaCodeStyleSettings>
+        <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="3" />
+        <option name="PACKAGES_TO_USE_IMPORT_ON_DEMAND">
+          <value />
+        </option>
+        <option name="IMPORT_LAYOUT_TABLE">
+          <value>
+            <package name="java" withSubpackages="true" static="false" />
+            <emptyLine />
+            <package name="javax" withSubpackages="true" static="false" />
+            <emptyLine />
+            <package name="org" withSubpackages="true" static="false" />
+            <emptyLine />
+            <package name="com" withSubpackages="true" static="false" />
+            <emptyLine />
+            <package name="" withSubpackages="true" static="false" />
+            <emptyLine />
+            <package name="" withSubpackages="true" static="true" />
+          </value>
+        </option>
+      </JavaCodeStyleSettings>
+      <XML>
+        <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
+      </XML>
+      <codeStyleSettings language="CFML">
+        <option name="ALIGN_MULTILINE_PARAMETERS_IN_CALLS" value="true" />
+        <option name="PARENT_SETTINGS_INSTALLED" value="true" />
+      </codeStyleSettings>
+      <codeStyleSettings language="ECMA Script Level 4">
+        <option name="ALIGN_MULTILINE_PARAMETERS_IN_CALLS" value="true" />
+        <option name="KEEP_SIMPLE_BLOCKS_IN_ONE_LINE" value="true" />
+        <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
+        <option name="PARENT_SETTINGS_INSTALLED" value="true" />
+      </codeStyleSettings>
+      <codeStyleSettings language="Groovy">
+        <option name="ALIGN_MULTILINE_PARAMETERS_IN_CALLS" value="true" />
+        <option name="KEEP_SIMPLE_BLOCKS_IN_ONE_LINE" value="true" />
+        <option name="PARENT_SETTINGS_INSTALLED" value="true" />
+      </codeStyleSettings>
+      <codeStyleSettings language="JAVA">
+        <option name="ALIGN_MULTILINE_PARAMETERS_IN_CALLS" value="true" />
+        <option name="KEEP_SIMPLE_BLOCKS_IN_ONE_LINE" value="true" />
+        <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
+        <indentOptions>
+          <option name="INDENT_SIZE" value="2" />
+          <option name="CONTINUATION_INDENT_SIZE" value="4" />
+          <option name="TAB_SIZE" value="2" />
+        </indentOptions>
+      </codeStyleSettings>
+      <codeStyleSettings language="JavaScript">
+        <option name="ALIGN_MULTILINE_PARAMETERS_IN_CALLS" value="true" />
+        <option name="KEEP_SIMPLE_BLOCKS_IN_ONE_LINE" value="true" />
+        <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
+        <indentOptions>
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+        </indentOptions>
+      </codeStyleSettings>
+      <codeStyleSettings language="SQL">
+        <indentOptions>
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+        </indentOptions>
+      </codeStyleSettings>
+    </code_scheme>
+  </component>
   <component name="ProjectCodeStyleSettingsManager">
     <option name="PER_PROJECT_SETTINGS">
       <value>
@@ -426,7 +442,6 @@
         <codeStyleSettings language="Groovy">
           <option name="ALIGN_MULTILINE_PARAMETERS_IN_CALLS" value="true" />
           <option name="KEEP_SIMPLE_BLOCKS_IN_ONE_LINE" value="true" />
-          <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
           <option name="PARENT_SETTINGS_INSTALLED" value="true" />
         </codeStyleSettings>
         <codeStyleSettings language="JAVA">
@@ -473,7 +488,7 @@
       <module fileurl="file://$PROJECT_DIR$/Code Review.iml" filepath="$PROJECT_DIR$/Code Review.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IU-123.123" project-jdk-type="IDEA JDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="IntelliJ IDEA IU-183.3795.13" project-jdk-type="IDEA JDK" />
   <component name="RmicSettings">
     <option name="IS_EANABLED" value="false" />
     <option name="DEBUGGING_INFO" value="true" />
@@ -481,8 +496,10 @@
     <option name="GENERATE_IIOP_STUBS" value="false" />
     <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
+  <component name="ThriftCompiler">
+    <compilers />
+  </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
@@ -510,4 +527,3 @@
     </library>
   </component>
 </project>
-
