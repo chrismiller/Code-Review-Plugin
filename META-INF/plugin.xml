@@ -21,10 +21,16 @@
         repository. This email is sent before anything is checked in, so colleagues can have a chance to review your
         changes before they are committed.
     </description>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
     <vendor url="http://plugins.intellij.net/plugin/?id=1199" email="chris_overseas@hotmail.com">Chris Miller</vendor>
     <idea-version since-build="183.3795"/>
     <change-notes><![CDATA[
+<br>v1.4.2 for IDEA 2018.3 and up (October 23rd 2018) - Chris Miller</br>
+<br>===========================================</br>
+<p><ul>
+<li>[BUG] Content of new files wasn't being displayed in the code review.</li>
+</ul></p>
+
 <br>v1.4.1 for IDEA 2018.3 and up (October 18th 2018) - Chris Miller</br>
 <br>===========================================</br>
 <p><ul>
@@ -100,7 +106,7 @@
 <br>v1.2.1 for IDEA 7.x (June 6th 2008)</br>
 <br>===========================================</br>
 <p><ul>
-<li>[BUG] The "to:" field wasn't populating it's history correctly</li>
+<li>[BUG] The "to:" field wasn't populating its history correctly</li>
 <li>[BUG] Fixed spelling mistake</li>
 </ul></p>
 

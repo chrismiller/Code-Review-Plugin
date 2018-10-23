@@ -218,7 +218,7 @@ public class ReviewBuilder {
    */
   private CharSequence[] getLinesOfText(ContentRevision content, boolean ignoreTrailingWhitespace) {
     if (content == null) {
-      return null;
+      return new CharSequence[0];
     }
 
     CharSequence[] result;
