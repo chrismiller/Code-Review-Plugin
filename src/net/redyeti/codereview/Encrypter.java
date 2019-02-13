@@ -20,12 +20,11 @@
  */
 package net.redyeti.codereview;
 
+import java.util.Base64;
+
 import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 /**
  * Encrypts/Decrypts strings using a caller-supplied passphrase.
@@ -62,8 +61,8 @@ public class Encrypter {
       byte[] inputBytes = data.getBytes("UTF8");
       byte[] outputBytes = cipher.doFinal(inputBytes);
 
-      BASE64Encoder encoder = new BASE64Encoder();
-      return encoder.encode(outputBytes);
+      Base64.Encoder encoder = Base64.getMimeEncoder();
+      return encoder.encodeToString(outputBytes);
     }
     catch (Exception e) {
       throw new EncrypterException("Failed to encrypt string.", e);
@@ -75,8 +74,8 @@ public class Encrypter {
    */
   public String decrypt(String encryptedData) {
     try {
-      BASE64Decoder decoder = new BASE64Decoder();
-      byte[] inputBytes = decoder.decodeBuffer(encryptedData);
+      Base64.Decoder decoder = Base64.getMimeDecoder();
+      byte[] inputBytes = decoder.decode(encryptedData);
 
       PBEKeySpec keySpec = new PBEKeySpec(key);
       SecretKeyFactory factory = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
